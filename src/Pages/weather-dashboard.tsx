@@ -8,6 +8,10 @@ import {
   AlertTitle,
 } from "@/components/ui/alert"
 import { useForeCastQuery, useReverseGeocode, useWeatherQuery } from '@/hooks/use-weather';
+import CurrentWeather from '@/components/Weather/CurrentWeather';
+import HourlyWeatherForecast from '@/components/Weather/HourlyWeatherForecast';
+import WeatherDetails from '@/components/Weather/WeatherDetails';
+import WeatherForeCast from '@/components/Weather/WeatherForeCast';
 
 const WeatherDashboard = () => {
   const {coordinates,error:locationError,isLoading:locationLoading,getLocation}=useGeolocation();
@@ -15,8 +19,7 @@ const WeatherDashboard = () => {
   const forecastQuery=useForeCastQuery(coordinates);
   const locationQuery=useReverseGeocode(coordinates);
 
-  const locationName = locationQuery?.data?.[0]?.name
-  console.log(locationName)
+  const locationName = locationQuery?.data?.[0]
   const handleRefresh=()=>{
     if(coordinates){
       weatherQuery.refetch();
@@ -83,7 +86,7 @@ const WeatherDashboard = () => {
   return (
     <div>
       {/* favourite cities */}
-      <div className='space-y-4'>
+      <div className='space-y-4 mb-3'>
         <div className='flex items-center justify-between'>
           <h1 className='text-xl font-bold tracking-tight'>
             My Location
@@ -99,6 +102,27 @@ const WeatherDashboard = () => {
         </div>
       </div>
       {/* current and hourly weather */}
+      <div className='grid gap-6'>
+        
+        <div className='flex flex-col md:flex-row gap-4'>
+          {/* current weather */}
+          <CurrentWeather data={weatherQuery?.data} locationName={locationName} />
+          {/* todays temperature graph */}
+          <HourlyWeatherForecast data={forecastQuery.data} />
+        </div>
+        
+        {/* section two */}
+        <div className='grid md:grid-cols-2 gap-6 items-start'>
+            {/* Weather Details */}
+            <div>
+              <WeatherDetails data={weatherQuery?.data} />
+            </div>
+            {/* 5 days forecast */}
+            <div>
+              <WeatherForeCast data={forecastQuery?.data} />
+            </div>
+        </div>
+      </div>
     </div>
   )
 }
