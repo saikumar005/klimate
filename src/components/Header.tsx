@@ -3,6 +3,7 @@ import { useTheme } from '@/context/theme-provider'
 import { Moon, Sun } from 'lucide-react'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import SearchBar from './SearchBar'
 
 const Header = ():React.ReactNode => {
     const {theme,setTheme}=useTheme()
@@ -18,7 +19,8 @@ const Header = ():React.ReactNode => {
                 />
             </Link>
             <div className='flex justify-center items-center gap-4'>
-                <p>Search bar....</p>
+                {/* search bar implementation */}
+                <SearchBar />
                 <div className={`cursor-pointer transition-transform duration-500 ${isDark? 'rotate-180':'rotate-0'} `} onClick={()=>setTheme(isDark? "light":"dark")}>
                     {
                         isDark?
